@@ -4,14 +4,26 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Homework 10</title>
+    <title>goit-js-hw-11</title>
+    <link rel="stylesheet" href="./sass/index.scss" />
   </head>
   <body>
-    <input type="text" id="search-box" />
-    <ul class="country-list"></ul>
-    <div class="country-info"></div>
+    <form class="search-form" id="search-form">
+      <input
+        class="search-form__input"
+        type="text"
+        name="searchQuery"
+        autocomplete="off"
+        placeholder="Search images..."
+      />
+      <button class="search-form__btn" type="submit">Search</button>
+    </form>
 
-    
-    <script src="index.js" type="module"></script>
+    <div class="gallery"></div>
+    <div class="wrapper"></div>
+
+    <a class="to-top is-hidden">TOP</a>
+
+    <script src="./index.js" type="module"></script>
   </body>
 </html>

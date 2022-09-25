@@ -1,31 +1,19 @@
-// Створи фронтенд частину програми пошуку даних про країну за її частковою або повною назвою. 
-// Подивися демо-відео роботи програми.
 // Для HTTP-запитів використана бібліотека axios.
-
-// https://axios-http.com/
-
-// $ npm install axios
-
-// Using jsDelivr CDN:
-// <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-// Using unpkg CDN:
-// <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-
 // import axios from "axios";
 // axios.get('/users')
 //   .then(res => {
 //     console.log(res.data);
 //   });
 
+// $ npm install axios
+
 // Використовується синтаксис async/await.
 // Для повідомлень використана бібліотека notiflix.
 
 // npm i notiflix
 
-// Import
 // all modules
 // import Notiflix from 'notiflix';
-
 // one by one
 // import { Notify } from 'notiflix/build/notiflix-notify-aio';
 // import { Report } from 'notiflix/build/notiflix-report-aio';
@@ -33,193 +21,108 @@
 // import { Loading } from 'notiflix/build/notiflix-loading-aio';
 // import { Block } from 'notiflix/build/notiflix-block-aio';
 
-// CSS and JS
-// <link rel="stylesheet" href="dist/notiflix-3.2.5.min.css" />
-// <script src="dist/notiflix-3.2.5.min.js"></script>
+// Код відформатований за допомогою Prettier.
+
+// !Завдання - пошук зображень
+// Створи фронтенд частину застосунку пошуку і перегляду зображень за ключовим словом. 
+// Додай оформлення елементів інтерфейсу. 
+// Подивись демо-відео роботи застосунку.
+
+// !Форма пошуку
+// Форма спочатку міститья в HTML документі. 
+// Користувач буде вводити рядок для пошуку у текстове поле, 
+// а по сабміту форми необхідно виконувати HTTP-запит.
+
+// <form class="search-form" id="search-form">
+//   <input
+//     type="text"
+//     name="searchQuery"
+//     autocomplete="off"
+//     placeholder="Search images..."
+//   />
+//   <button type="submit">Search</button>
+// </form>
+
+// !HTTP-запити
+// Для бекенду використовуй публічний API сервісу Pixabay. 
+https://pixabay.com/api/
+// user_id:30167991 
+// Your API key: 30167991-7ee84147a11351fc2ac43bf2c
+// Зареєструйся, 
+// отримай свій унікальний ключ доступу і ознайомся з документацією.
 
 
-// !HTTP-запит
-// Використовуй публічний API Rest Countries v2, 
-// https://restcountries.com/
-// а саме ресурс name, 
-// https://restcountries.com/v3.1/name/{name}
-// https://restcountries.com/v3.1/name/peru
-// https://restcountries.com/v3.1/name/united
-// який повертає масив об'єктів країн, 
-// що задовольнили критерій пошуку. Додай мінімальне оформлення елементів інтерфейсу.
+// Список параметрів рядка запиту, які тобі обов'язково необхідно вказати:
 
-// Напиши функцію fetchCountries(name), яка робить HTTP-запит на ресурс name і повертає 
-// проміс з масивом країн - результатом запиту. Винеси її в окремий файл fetchCountries.js 
-// і зроби іменований експорт.
+// key - твій унікальний ключ доступу до API.
+// q - термін для пошуку. Те, що буде вводити користувач.
+// image_type - тип зображення. На потрібні тільки фотографії, тому постав значення photo.
+// orientation - орієнтація фотографії. Постав значення horizontal.
+// safesearch - фільтр за віком. Постав значення true.
+// У відповіді буде масив зображень, що задовольнили критерії параметрів запиту. 
+// Кожне зображення описується об'єктом, з якого тобі цікаві тільки наступні властивості:
 
-// !Фільтрація полів
-// У відповіді від бекенду повертаються об'єкти, велика частина властивостей яких, тобі не знадобиться. Щоб скоротити обсяг переданих даних, додай рядок параметрів запиту - таким чином цей бекенд реалізує фільтрацію полів. Ознайомся з документацією синтаксису фільтрів.
+// webformatURL - посилання на маленьке зображення для списку карток.
+// largeImageURL - посилання на велике зображення.
+// tags - рядок з описом зображення. Підійде для атрибуту alt.
+// likes - кількість лайків.
+// views - кількість переглядів.
+// comments - кількість коментарів.
+// downloads - кількість завантажень.
+// Якщо бекенд повертає порожній масив, значить нічого підходящого не було знайдено. 
+// У такому разі показуй повідомлення з текстом 
+// "Sorry, there are no images matching your search query. Please try again.". 
+// Для повідомлень використовуй бібліотеку notiflix.
 
-// Тобі потрібні тільки наступні властивості:
-// name.official - повна назва країни
-// capital - столиця
-// population - населення
-// flags.svg - посилання на зображення прапора
-// languages - масив мов
+// !Галерея і картка зображення
+// Елемент div.gallery спочатку міститься в HTML документі, 
+// і в нього необхідно рендерити розмітку карток зображень. 
+// Під час пошуку за новим ключовим словом необхідно повністю очищати вміст галереї, 
+// щоб не змішувати результати.
 
+// <div class="gallery">
+//   <!-- Картки зображень -->
+// </div>
 
-// !Поле пошуку
-// Назву країни для пошуку користувач вводить у текстове поле input#search-box. 
-// HTTP-запити виконуються при введенні назви країни, тобто на події input. 
-// Але робити запит з кожним натисканням клавіші не можна, 
-// оскільки одночасно буде багато запитів і вони будуть виконуватися в непередбачуваному порядку.
-// Необхідно застосувати прийом Debounce на обробнику події і робити HTTP-запит через 300мс після того, 
-// як користувач перестав вводити текст. Використовуй пакет lodash.debounce.
+// Шаблон розмітки картки одного зображення для галереї.
 
-// lodash.debounce v4.0.8
-// Using npm:
-// $ {sudo -H} npm i -g npm
-// $ npm i --save lodash.debounce
+// <div class="photo-card">
+//   <img src="" alt="" loading="lazy" />
+//   <div class="info">
+//     <p class="info-item">
+//       <b>Likes</b>
+//     </p>
+//     <p class="info-item">
+//       <b>Views</b>
+//     </p>
+//     <p class="info-item">
+//       <b>Comments</b>
+//     </p>
+//     <p class="info-item">
+//       <b>Downloads</b>
+//     </p>
+//   </div>
+// </div>
 
-// In Node.js:
-// var debounce = require('lodash.debounce');
+// !Пагінація
+// Pixabay API підтримує пагінацію і надає параметри page і per_page. 
+// Зроби так, щоб в кожній відповіді приходило 40 об'єктів (за замовчуванням 20).
 
-// Якщо користувач повністю очищає поле пошуку, то HTTP-запит не виконується, 
-// а розмітка списку країн або інформації про країну зникає.
+// Початкове значення параметра page повинно бути 1.
+// З кожним наступним запитом, його необхідно збільшити на 1.
+// У разі пошуку за новим ключовим словом, значення page потрібно повернути до початкового, 
+// оскільки буде пагінація по новій колекції зображень.
+// HTML документ вже містить розмітку кнопки, по кліку на яку, 
+// необхідно виконувати запит за наступною групою зображень і додавати розмітку 
+// до вже існуючих елементів галереї.
 
-// Виконай санітизацію введеного рядка методом trim(), це вирішить проблему, 
-// коли в полі введення тільки пробіли, або вони є на початку і в кінці рядка.
+// <button type="button" class="load-more">Load more</button>
 
-
-// !Інтерфейс
-// Якщо у відповіді бекенд повернув більше ніж 10 країн, в інтерфейсі 
-// з'являється повідомлення про те, що назва повинна бути специфічнішою. 
-// Для повідомлень використовуй бібліотеку notiflix і виводь такий рядок 
-// "Too many matches found. Please enter a more specific name.".
-
-// Якщо бекенд повернув від 2-х до 10-и країн, під тестовим полем відображається список знайдених країн. 
-// Кожен елемент списку складається з прапора та назви країни.
-
-// Якщо результат запиту - це масив з однією країною, 
-// в інтерфейсі відображається розмітка картки з даними про країну: 
-// прапор, назва, столиця, населення і мови.
-
-// !Обробка помилки
-// Якщо користувач ввів назву країни, якої не існує, бекенд поверне не порожній масив, 
-// а помилку зі статус кодом 404 - не знайдено. Якщо це не обробити, 
-// то користувач ніколи не дізнається про те, що пошук не дав результатів. Додай повідомлення 
-// "Oops, there is no country with that name" у разі помилки, використовуючи бібліотеку notiflix.
-
-// !УВАГА
-// Не забувай про те, що fetch не вважає 404 помилкою, 
-// тому необхідно явно відхилити проміс, щоб можна було зловити і обробити помилку.
-
-
-import './css/styles.css';
-import { fetchCountries } from './fetchCountries';
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
-import debounce from 'lodash.debounce';
-
-const DEBOUNCE_DELAY = 300;
-const refs = {
-  inputBox: document.querySelector('#search-box'),
-  countriList: document.querySelector('.country-list'),
-  countriInfo: document.querySelector('.country-info'),
-};
-
-refs.inputBox.addEventListener('input', debounce(onInputChange, DEBOUNCE_DELAY));
-
-function onInputChange(e) {
-  const countryName = e.target.value.trim();
-
-  if (!countryName) {
-    clearTemplate();
-    return;
-  }
-
-  fetchCountries(countryName)
-    .then(data => {
-      if (data.length > 10) {
-        specificNameInfo();
-        clearTemplate();
-        return;
-      }
-      renderTemplate(data);
-    })
-    .catch(error => {
-      clearTemplate();
-      errorWarn();
-    });
-}
-
-function errorWarn() {
-    Notify.failure(`Oops, there is no country with that name`);
-  }
-
-  function specificNameInfo() {
-    Notify.info(`Too many matches found. Please enter a more specific name.`);
-  }
-
-function clearTemplate() {
-    refs.countriInfo.innerHTML = '';
-    refs.countriList.innerHTML = '';
-  }
-
-function renderTemplate(elements) {
-  let template = '';
-  let refsTemplate = '';
-  clearTemplate();
-
-  if (elements.length === 1) {
-    template = createItem(elements);
-    refsTemplate = refs.countriInfo;
-  } else {
-    template = createList(elements);
-    refsTemplate = refs.countriList;
-  }
-
-  drawTemplate(refsTemplate, template);
-}
-
-function createItem(element) {
-  return element.map(
-    ({ name, capital, population, flags, languages }) =>
-      `
-      <img
-        src="${flags.svg}" 
-        alt="${name.official}" 
-        width="80" 
-        height="50">
-      <h1 class="country-info__title">${name.official}</h1>
-      <ul class="country-info__list">
-          <li class="country-info__item">
-          <span>Capital:</span>
-        ${capital}
-          </li>
-          <li class="country-info__item">
-          <span>Population:</span>
-          ${population}
-          </li>
-          <li class="country-info__item">
-          <span>Lenguages:</span>
-          ${Object.values(languages)}
-          </li>
-      </ul>
-  `
-  );
-}
-
-function createList(elements) {
-  return elements
-    .map(
-      ({ name, flags }) => `
-      <li class="country-list__item">
-        <img class="country-list__img" 
-          src="${flags.svg}" 
-          alt="${name.official}" 
-          width="50" 
-          height="50">
-        ${name.official}
-      </li>`
-    )
-    .join('');
-}
-
-function drawTemplate(refs, markup) {
-  refs.innerHTML = markup;
-}
+// В початковому стані кнопка повинна бути прихована.
+// Після першого запиту кнопка з'являється в інтерфейсі під галереєю.
+// При повторному сабміті форми кнопка спочатку ховається, 
+// а після запиту знову відображається.
+// У відповіді бекенд повертає властивість totalHits - загальна кількість зображень, 
+// які відповідають критерію пошуку (для безкоштовного акаунту). 
+// Якщо користувач дійшов до кінця колекції, ховай кнопку і виводь повідомлення з текстом 
+// "We're sorry, but you've reached the end of search results.".
